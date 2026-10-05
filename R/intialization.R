@@ -8,20 +8,37 @@ nobel_categories <- function() {
 }
 
 # Turn "Physics" / "physics" / "phy" into the API code "phy"
+# Turn "Physics" / "physics" / "phy" into the API code "phy"
 category_code <- function(category) {
-  if (!is.character(category) || length(category) != 1) {
-    stop("`category` must be a single character string.", call. = FALSE)
-  }
   cats <- nobel_categories()
-  key <- tolower(category)
-  if (key %in% cats$code) return(key)
-  if (!key %in% cats$name) {
-    stop("Unknown category '", category, "'. Choose one of: ",
-         paste(cats$name, collapse = ", "), call. = FALSE)
+  
+  key <- tolower(trimws(category))
+  
+  # Accept internal name, e.g. "physics", "medicine"
+  if (key %in% cats$name) {
+    return(cats$code[match(key, cats$name)])
   }
-  cats$code[cats$name == key]
+  
+  # Accept API code, e.g. "phy", "med"
+  if (key %in% cats$code) {
+    return(key)
+  }
+  
+  # Accept official label, e.g. "Physics",
+  # "Physiology or Medicine", "Economic Sciences"
+  label_key <- tolower(cats$label)
+  
+  if (key %in% label_key) {
+    return(cats$code[match(key, label_key)])
+  }
+  
+  stop(
+    "Unknown category '", category,
+    "'. Choose one of: ",
+    paste(cats$name, collapse = ", "),
+    call. = FALSE
+  )
 }
-
 # Returns NA instead of crashing when a field is missing
 get_field <- function(x, ...) {
   for (name in c(...)) {
@@ -30,3 +47,4 @@ get_field <- function(x, ...) {
   }
   x
 }
+
