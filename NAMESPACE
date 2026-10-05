@@ -3,5 +3,10 @@
 export(get_laureates)
 export(plot_age_over_time)
 export(plot_birth_countries)
-importFrom(ggplot2,.data)
+importFrom(ggplot2,
+  .data,
+  geom_point,
+  geom_smooth,
+  ggplot
+)
 importFrom(maps,map)

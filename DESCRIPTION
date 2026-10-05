@@ -5,8 +5,11 @@ Authors@R:
     person("Anh", "Tran", , "anhtr209@student.liu.se", role = c("aut", "cre"))
     person("Tatevik", "Hakobyan", , "tatha821@student.liu.se", role = c("aut", "cre"))
 Description: Provides functions to download data on Nobel Prize laureates from the official Nobel Prize API <https://api.nobelprize.org/2.1> and to visualise it, including maps of laureates' birth countries and plots of laureates' age at the time of the award. A Shiny app is included for exploring the data interactively.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Config/roxygen2/version: 8.1.0
+Imports: 
+    ggplot2,
+    httr2,
+    maps

@@ -4,6 +4,7 @@
 #' @return A ggplot object: one point per laureate with a trend line, 
 #' 
 #' @importFrom ggplot2 .data
+#' @importFrom ggplot2 ggplot geom_point geom_smooth
 #' @export
 plot_age_over_time <- function(laureates) {
   
