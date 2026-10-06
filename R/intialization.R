@@ -8,7 +8,6 @@ nobel_categories <- function() {
 }
 
 # Turn "Physics" / "physics" / "phy" into the API code "phy"
-# Turn "Physics" / "physics" / "phy" into the API code "phy"
 category_code <- function(category) {
   cats <- nobel_categories()
   

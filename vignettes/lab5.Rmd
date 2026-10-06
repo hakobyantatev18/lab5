@@ -1,0 +1,105 @@
+---
+title: "Exploring Nobel Prize data with lab5"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Exploring Nobel Prize data with lab5}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 4.5
+)
+```
+
+## Introduction
+
+The **lab5** package gives easy access to the
+[Nobel Prize API](https://www.nobelprize.org/about/developer-zone-2/), which provides data on every Nobel Prize and laureate since 1901. No API key needed.
+
+The package has three exported functions:
+
+* `get_laureates()` downloads laureates, optionally filtered by category and year.
+* `plot_age_over_time()` plots how old laureates were when they received their prize.
+* `plot_birth_countries()` draws a world map of where laureates were born.
+
+Downloading and plotting are kept separate: you download the data once with `get_laureates()` and can then pass it to either plotting function.
+
+## Installation
+
+```{r, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("hakobyantatev18/lab5")
+```
+
+```{r}
+library(lab5)
+```
+
+## Downloading laureates
+
+Get the laureates of one category in one year:
+
+```{r}
+physics_2023 <- get_laureates(category = "physics", year = 2023)
+physics_2023[, c("name", "year", "category", "age_at_award")]
+```
+
+The `category` argument accepts `"physics"`, `"chemistry"`, `"medicine"`, `"literature"`, `"peace"` and `"economics"`, in any capitalisation. Leaving out an argument means "no filter", so `get_laureates("peace")` returns all Peace Prize laureates and `get_laureates()` returns everyone.
+
+The result is a data frame with one row per laureate and prize. These are the available columns:
+
+```{r}
+names(physics_2023)
+```
+
+Invalid input gives an informative error:
+
+```{r, error = TRUE}
+get_laureates(category = "cooking")
+```
+
+### Laureates with more than one prize
+
+Some laureates have won several prizes. The API returns all of a laureate's prizes even when you filter, so the package keeps only the prizes that match your request. Marie Curie, for example, won both the 1903 Physics Prize and the 1911 Chemistry Prize, but asking for Chemistry in 1911 returns only the Chemistry prize:
+
+```{r}
+get_laureates("chemistry", 1911)[, c("name", "year", "category")]
+```
+
+### Organisations
+
+The Peace Prize is sometimes awarded to organisations. They have no gender or birth date, so these columns are `NA`:
+
+```{r}
+get_laureates("peace", 1917)[, c("name", "gender", "birth_date")]
+```
+
+## Age of laureates over time
+
+`plot_age_over_time()` shows each laureate's age at the time of the award, with a trend line:
+
+```{r}
+physics <- get_laureates("physics")
+plot_age_over_time(physics)
+```
+
+When the data covers more than one category, the plot is split into one panel per category:
+
+```{r, fig.height = 6}
+everyone <- get_laureates()
+plot_age_over_time(everyone)
+```
+
+## Where laureates were born
+
+`plot_birth_countries()` colours each country by the number of laureates born there, using present-day country borders:
+
+```{r}
+plot_birth_countries(everyone)
+```
+
