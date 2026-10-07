@@ -15,14 +15,14 @@ liu_turkos <- c("#D1F4F6",  # 20%
 #' @export
 plot_birth_countries <- function(laureates) {
   
-  # Count laureates per country (table() drops NA, i.e. organisations)
+  # Count laureates per country (table() drops organisations)
   counts <- as.data.frame(table(region = laureates$birth_country),
                           stringsAsFactors = FALSE)
   names(counts)[2] <- "laureates"
   
-  world <- ggplot2::map_data("world")
+  world <- ggplot2::map_data("world") #world map outline 
   world <- merge(world, counts, by = "region", all.x = TRUE)
-  world <- world[order(world$group, world$order), ]  # merge() scrambles the polygon order
+  world <- world[order(world$group, world$order), ] 
   
   ggplot2::ggplot(world, ggplot2::aes(x = .data$long, y = .data$lat,
                                       group = .data$group, fill = .data$laureates)) +

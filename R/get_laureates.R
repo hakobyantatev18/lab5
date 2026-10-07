@@ -23,9 +23,9 @@ parse_laureates <- function(raw) {
     do.call(rbind, prize_rows)
   })
   
-  df <- do.call(rbind, rows)
+  df <- do.call(rbind, rows) #whole list of tables at once 
   # Take the year as text 
-  df$birth_year <- as.integer(substr(df$birth_date, 1, 4))
+  df$birth_year <- as.integer(substr(df$birth_date, 1, 4)) #sometimes only year known
   df$age_at_award <- df$year - df$birth_year
   df
 }
@@ -45,8 +45,7 @@ parse_laureates <- function(raw) {
 #' @export
 get_laureates <- function(category = NULL, year = NULL) {
   current_year <- as.integer(format(Sys.Date(), "%Y"))
-  if (!is.null(year) &&
-      (!is.numeric(year) || length(year) != 1 || year < 1901 || year > current_year)) {
+  if (!is.null(year) && (!is.numeric(year) || length(year) != 1 || year < 1901 || year > current_year)) {
     stop("`year` must be a single number between 1901 and ", current_year, ".",
          call. = FALSE)
   }
@@ -58,7 +57,7 @@ get_laureates <- function(category = NULL, year = NULL) {
   df <- parse_laureates(raw)
   if (nrow(df) == 0) return(df)
   
-  # Keep only the prizes that match the request (see the Marie Curie note above)
+  # Keep only the prizes that match the request
   if (!is.null(code)) {
     cats <- nobel_categories()
     df <- df[df$category == cats$label[cats$code == code], ]

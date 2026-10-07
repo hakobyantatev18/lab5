@@ -8,7 +8,7 @@
 #' @export
 plot_age_over_time <- function(laureates) {
   
-  # LiU palette (same as the birth map)
+  # liu colors 
   liu_turkos <- "#17C7D2"
   liu_dark   <- "#0E7A80"
   liu_light  <- "#D1F4F6"
@@ -27,12 +27,12 @@ plot_age_over_time <- function(laureates) {
       strip.text       = ggplot2::element_text(colour = liu_dark, face = "bold")
     )
   
-  # A trend line on very few points is meaningless (and loess warns)
+  # A trend line but only if there are at least 10 points 
   if (nrow(df) >= 10) {
     p <- p + ggplot2::geom_smooth(method = "loess", formula = y ~ x,
                                   colour = liu_dark, fill = liu_turkos, alpha = 0.2)
   }
-  if (length(unique(df$category)) > 1) {
+  if (length(unique(df$category)) > 1) { #splits the plot into 1 panel per cat if more then 2 cats 
     p <- p + ggplot2::facet_wrap(ggplot2::vars(.data$category))
   }
   p
