@@ -64,7 +64,6 @@ get_laureates <- function(category = NULL, year = NULL) {
     df <- df[df$category == cats$label[cats$code == code], ]
   }
   if (!is.null(year)) df <- df[df$year == year, ]
-  
   rownames(df) <- NULL
   df
 }
