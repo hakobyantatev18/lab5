@@ -28,7 +28,7 @@ plot_birth_countries <- function(laureates) {
                                       group = .data$group, fill = .data$laureates)) +
     ggplot2::geom_polygon(colour = "white", linewidth = 0.1) +
     ggplot2::scale_fill_gradientn(colours = liu_turkos,
-                                  trans = "log10",
+                                  trans = "log10", 
                                   na.value = "grey85",
                                   name = "Laureates") +
     ggplot2::coord_quickmap() +

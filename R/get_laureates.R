@@ -24,6 +24,7 @@ parse_laureates <- function(raw) {
   })
   
   df <- do.call(rbind, rows) #whole list of tables at once 
+  df$birth_country <- standardize_country(df$birth_country)
   # Take the year as text 
   df$birth_year <- as.integer(substr(df$birth_date, 1, 4)) #sometimes only year known
   df$age_at_award <- df$year - df$birth_year
